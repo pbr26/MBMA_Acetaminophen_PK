@@ -1,0 +1,9 @@
+parameter,symbol,estimate,unit
+Absorption rate constant (ka),ka,1.938,1/h
+Apparent clearance (CL/F),CL/F,12.662,L/h
+Apparent volume of distribution (V/F),V/F,42.04,L
+Elimination rate constant (ke),ke,0.301,1/h
+Elimination half-life (t1/2),t1/2,2.301,h
+Time to peak at 1000 mg (Tmax),Tmax,1.137,h
+Peak concentration at 1000 mg (Cmax),Cmax,16.888,mg/L
+Exposure at 1000 mg (AUC0-inf),AUC0-inf,78.974,mg*h/L

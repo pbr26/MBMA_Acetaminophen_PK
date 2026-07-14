@@ -1,0 +1,14 @@
+study_id,first_author,year,dose_mg,n,formulation,fasting_state,sex,mean_age_y,mean_weight_kg,cmax_mg_L,cmax_sd,tmax_h,tmax_sd,auc_last_mg_h_L,auc_inf_mg_h_L,auc_sd,thalf_h,thalf_sd,clf_L_h,vf_L,f_abs,f_rel,data_status,source_ref,notes
+S01,Rawlins,1977,500,6,IR tablet,fasted,M,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0.63,NA,extracted,Rawlins 1977 Eur J Clin Pharmacol 11:283,Absolute F from AUC vs IV 1000 mg; IV CL 352 mL/min (=21.1 L/h)
+S01,Rawlins,1977,1000,6,IR tablet,fasted,M,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0.89,NA,extracted,Rawlins 1977 Eur J Clin Pharmacol 11:283,Absolute F increases with dose
+S01,Rawlins,1977,2000,6,IR tablet,fasted,M,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0.87,NA,extracted,Rawlins 1977 Eur J Clin Pharmacol 11:283,Absolute F
+S02,Divoll,1982,650,NA,IR tablet,fasted,MF,27,NA,11.8,NA,0.79,NA,NA,NA,NA,NA,NA,NA,NA,0.79,NA,extracted,Divoll 1982 J Clin Pharmacol 22:571,Young healthy adult arm; abs absorption t1/2 12.6 min
+S02,Divoll,1982,650,NA,IR tablet,fed,MF,27,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Divoll 1982 J Clin Pharmacol 22:571,Fed arm - read Cmax/Tmax off table for food covariate
+S03,Ameer,1983,650,NA,IR tablet,fasted,MF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Ameer/Greenblatt 1983,Absolute & relative F reported - transcribe from table
+S04,Yue,2018,1000,NA,IR tablet,fasted,MF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Yue 2018 Clin Pharmacol Drug Dev 10.1002/cpdd.367,IR reference arm of SR study - extract Cmax/Tmax/AUC/t1/2
+S05,Liu,2018,1000,NA,IR tablet,fasted,MF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Liu 2018 Clin Pharmacol Drug Dev 10.1002/cpdd.369,IR comparator arm (multiple dose) - note steady-state Cmax/Cmin/AUCtau
+S06,NA,2018,500,NA,IR tablet,fasted,MF,NA,NA,11.29,3.94,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,extracted,Tablet/capsule/effervescent comparison (RG 324479658),Tablet arm Cmax at 1 h; confirm AUC & verify citation
+S06,NA,2018,500,NA,IR capsule,fasted,MF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Tablet/capsule/effervescent comparison (RG 324479658),Capsule arm for formulation covariate
+S07,Marroquin-Cardona,2016,650,26,IR tablet,fasted,MF,NA,NA,9.46,NA,NA,NA,35.89,37.29,NA,NA,NA,NA,NA,NA,NA,extracted,Drugs R D 2016 10.1007/s40268-016-0145-9,Plain acetaminophen reference arm (geometric means); add Tmax from table
+S08,NA,2003,500,NA,IR tablet,fasted,MF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Curr Ther Res 2003 S0011393X03001103,Conventional 500 mg reference tablet arm
+S09,NA,NA,1000,NA,IR tablet,fasted,F,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,to_extract,Paracetamol PK in young women PMC4644344,Healthy young women; confirm dose then extract Cmax/Tmax/AUC/CLF

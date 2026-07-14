@@ -1,0 +1,85 @@
+study_id,dose_mg,formulation,time_h,obs_conc_mg_L,obs_sd_mg_L,n,pred_conc_mg_L,residual_mg_L,source_ref
+S01,500,IR tablet,0.25,1.3,0.325,6,4.386,-3.086,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,0.5,2.154,0.539,6,6.77,-4.616,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,0.75,2.687,0.672,6,7.943,-5.256,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,1,2.991,0.748,6,8.392,-5.401,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,1.5,3.159,0.79,6,8.194,-5.035,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,2,3.008,0.752,6,7.418,-4.41,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,3,2.391,0.598,6,5.663,-3.272,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,4,1.767,0.442,6,4.215,-2.448,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,6,0.902,0.226,6,2.311,-1.409,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,8,0.45,0.113,6,1.265,-0.815,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,10,0.224,0.056,6,0.693,-0.469,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,500,IR tablet,12,0.111,0.028,6,0.379,-0.268,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,0.25,3.673,0.918,6,8.772,-5.099,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,0.5,6.086,1.522,6,13.54,-7.454,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,0.75,7.592,1.898,6,15.886,-8.294,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,1,8.45,2.112,6,16.784,-8.334,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,1.5,8.926,2.232,6,16.387,-7.461,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,2,8.499,2.125,6,14.836,-6.337,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,3,6.756,1.689,6,11.325,-4.569,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,4,4.992,1.248,6,8.43,-3.438,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,6,2.549,0.637,6,4.622,-2.073,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,8,1.272,0.318,6,2.531,-1.259,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,10,0.632,0.158,6,1.385,-0.753,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,1000,IR tablet,12,0.314,0.079,6,0.759,-0.445,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,0.25,7.181,1.795,6,17.544,-10.363,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,0.5,11.899,2.975,6,27.079,-15.18,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,0.75,14.843,3.711,6,31.772,-16.929,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,1,16.52,4.13,6,33.569,-17.049,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,1.5,17.451,4.363,6,32.774,-15.323,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,2,16.617,4.154,6,29.672,-13.055,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,3,13.208,3.302,6,22.651,-9.443,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,4,9.759,2.44,6,16.86,-7.101,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,6,4.983,1.246,6,9.244,-4.261,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,8,2.487,0.622,6,5.061,-2.574,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,10,1.236,0.309,6,2.771,-1.535,"Rawlins 1977 (F,CL real; V,ka typical)"
+S01,2000,IR tablet,12,0.614,0.153,6,1.517,-0.903,"Rawlins 1977 (F,CL real; V,ka typical)"
+S02,650,IR tablet,0.25,8.204,2.051,12,5.702,2.502,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,0.5,11.093,2.773,12,8.801,2.292,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,0.75,11.79,2.948,12,10.326,1.464,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,1,11.604,2.901,12,10.91,0.694,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,1.5,10.444,2.611,12,10.652,-0.208,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,2,9.152,2.288,12,9.643,-0.491,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,3,6.947,1.737,12,7.362,-0.415,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,4,5.265,1.316,12,5.48,-0.215,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,6,3.024,0.756,12,3.004,0.02,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,8,1.737,0.434,12,1.645,0.092,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,10,0.998,0.249,12,0.901,0.097,"Divoll 1982 (Cmax,Tmax real)"
+S02,650,IR tablet,12,0.573,0.143,12,0.493,0.08,"Divoll 1982 (Cmax,Tmax real)"
+S04,1000,IR tablet,0.25,3.647,0.912,12,8.772,-5.125,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,0.5,6.008,1.502,12,13.54,-7.532,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,0.75,7.467,1.867,12,15.886,-8.419,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,1,8.297,2.074,12,16.784,-8.487,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,1.5,8.789,2.197,12,16.387,-7.598,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,2,8.453,2.113,12,14.836,-6.383,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,3,6.974,1.744,12,11.325,-4.351,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,4,5.437,1.359,12,8.43,-2.993,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,6,3.168,0.792,12,4.622,-1.454,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,8,1.826,0.457,12,2.531,-0.705,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,10,1.052,0.263,12,1.385,-0.333,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S04,1000,IR tablet,12,0.605,0.151,12,0.759,-0.154,"IR 1000mg reference (Cmax,Tmax,t-half real)"
+S06,500,IR tablet,0.25,6.589,1.647,12,4.386,2.203,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,0.5,9.709,2.427,12,6.77,2.939,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,0.75,10.985,2.746,12,7.943,3.042,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,1,11.29,2.822,12,8.392,2.898,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,1.5,10.658,2.664,12,8.194,2.464,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,2,9.52,2.38,12,7.418,2.102,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,3,7.297,1.824,12,5.663,1.634,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,4,5.537,1.384,12,4.215,1.322,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,6,3.181,0.795,12,2.311,0.87,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,8,1.827,0.457,12,1.265,0.562,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,10,1.049,0.262,12,0.693,0.356,Tablet/capsule study (Cmax real)
+S06,500,IR tablet,12,0.603,0.151,12,0.379,0.224,Tablet/capsule study (Cmax real)
+S07,650,IR tablet,0.25,5.991,1.498,26,5.702,0.289,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,0.5,8.508,2.127,26,8.801,-0.293,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,0.75,9.36,2.34,26,10.326,-0.966,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,1,9.426,2.356,26,10.91,-1.484,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,1.5,8.685,2.171,26,10.652,-1.967,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,2,7.674,1.919,26,9.643,-1.969,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,3,5.846,1.462,26,7.362,-1.516,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,4,4.432,1.108,26,5.48,-1.048,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,6,2.546,0.636,26,3.004,-0.458,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,8,1.462,0.366,26,1.645,-0.183,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,10,0.84,0.21,26,0.901,-0.061,Marroquin-Cardona 2016 (Cmax real)
+S07,650,IR tablet,12,0.482,0.121,26,0.493,-0.011,Marroquin-Cardona 2016 (Cmax real)

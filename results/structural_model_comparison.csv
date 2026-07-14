@@ -1,0 +1,3 @@
+model,n_par,obj_2LL,AIC,dAIC
+1-compartment,3,2383.56,2397.56,0
+2-compartment,5,2381.93,2399.93,2.369999999999891

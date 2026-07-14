@@ -1,0 +1,22 @@
+# R / RStudio
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+.Renviron
+
+# Model fit outputs (large / regenerable by scripts)
+models/*.rds
+results/*.rds
+
+# LibreOffice / Office lock files
+.~lock.*#
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+
+# NOTE: MBMA_Acetaminophen_PK.Rproj IS tracked on purpose (the project anchor).
