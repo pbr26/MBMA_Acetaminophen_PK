@@ -31,14 +31,39 @@ Run everything with `source("scripts/run_all.R")`, or step by step:
 
 ## Current results (bridge data)
 
-| Quantity | Estimate |
-|---|---|
-| Absorption rate ka | ~1.9 /h |
-| Apparent clearance CL/F | ~12.7 L/h |
-| Apparent volume V/F | ~42 L |
-| Preferred structural model | 1-compartment (lower AIC than 2-compartment) |
+Fitted one-compartment, first-order-absorption model across 5 study arms (500–2000 mg):
 
-> **These numbers currently come from a bridge dataset** reconstructed from each study's real published NCA parameters (Cmax, Tmax, half-life). They validate the pipeline. For reportable results, replace the `BRIDGE_` rows in `data/raw/pk_profiles.csv` with digitized real curves (see `docs/02b_digitizing_guide.md`) and re-run.
+| Parameter | Symbol | Estimate | Unit |
+|---|---|---|---|
+| Absorption rate constant | ka | ~1.9 | 1/h |
+| Apparent clearance | CL/F | ~12.7 | L/h |
+| Apparent volume of distribution | V/F | ~42 | L |
+| Elimination rate constant | ke | ~0.30 | 1/h |
+| Elimination half-life | t½ | ~2.3 | h |
+| Exposure at 1000 mg | AUC₀–∞ | ~79 | mg·h/L |
+
+**Structural model:** the 1-compartment model was preferred over a 2-compartment
+alternative (AIC 2397.6 vs 2399.9 — adding a second compartment did not improve
+the fit enough to justify the extra parameters).
+
+**Covariate (dose):** in the dose-stratified check, the apparent parameters
+shifted between the low-dose (≤700 mg) and high-dose (≥1000 mg) groups, consistent
+with the known dose-dependence of oral acetaminophen bioavailability (Rawlins 1977).
+The high-dose stratum has only 2 studies, so this is indicative, not definitive.
+
+> **These numbers come from a bridge dataset** reconstructed from each study's real
+> published NCA parameters (Cmax, Tmax, half-life). They validate the pipeline end to
+> end; they are **not** final scientific estimates. For reportable results, replace the
+> `BRIDGE_` rows in `data/raw/pk_profiles.csv` with digitized real curves
+> (see `docs/02b_digitizing_guide.md`) and re-run `scripts/run_all.R`.
+
+## Outputs produced
+
+- `results/params_oral_1cmt.csv` — full parameter table (ka, CL/F, V/F, ke, t½, Tmax, Cmax, AUC)
+- `results/structural_model_comparison.csv` — 1- vs 2-compartment AIC
+- `results/covariate_stratified.csv` — dose-stratified parameters
+- `results/concentration_obs_pred.csv` — observed vs predicted concentrations
+- `plots/fit_profiles.png`, `plots/obs_vs_pred.png`, `plots/residuals_time.png`
 
 ## Repository layout
 
