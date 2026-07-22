@@ -4,7 +4,13 @@ project:
 
 website:
   title: "Acetaminophen MBMA"
-  description: "Model-based meta-analysis of oral acetaminophen pharmacokinetics"
+  description: "Model-based meta-analysis of oral acetaminophen pharmacokinetics using published aggregate data and the admixr2 R package."
+  site-url: https://pbr26.github.io/MBMA_Acetaminophen_PK/
+  image: preview.png            # social-card image (LinkedIn, Twitter, Slack previews)
+  favicon: preview.png
+  open-graph: true
+  twitter-card:
+    card-style: summary_large_image
   navbar:
     left:
       - href: index.qmd

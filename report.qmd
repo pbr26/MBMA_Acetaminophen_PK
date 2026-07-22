@@ -2,6 +2,8 @@
 title: "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data"
 author: "Pramod BR"
 date: today
+bibliography: references.bib
+link-citations: true
 format:
   html:
     theme: cosmo
@@ -72,9 +74,10 @@ group means, standard deviations, and sample sizes appear in the literature.
 **Model-based meta-analysis (MBMA)** addresses this by fitting a mechanistic PK model directly
 to summary-level ("aggregate") data drawn from multiple studies. Unlike a naïve meta-analysis
 that averages reported endpoints, MBMA preserves the pharmacological structure of absorption,
-distribution, and elimination while borrowing strength across studies. The `admixr2` R package
-implements this approach on top of the `nlmixr2`/`rxode2` modelling ecosystem, matching each
-study's observed mean vector and its variance against model-predicted counterparts.
+distribution, and elimination while borrowing strength across studies [@valitalo2021]. The
+`admixr2` R package [@vandebeek2025] implements this approach on top of the `nlmixr2`/`rxode2`
+modelling ecosystem [@fidler2019], matching each study's observed mean vector and its variance
+against model-predicted counterparts.
 
 # Objectives
 
@@ -95,8 +98,8 @@ concentration–time profile. Eligibility followed a PICO framework — Populati
 to derive absolute bioavailability); Outcome: reported PK summaries (Cmax, Tmax, AUC, half-life,
 CL/F, V/F) and/or a mean profile. Modified-release, effervescent, and liquid formulations,
 disease or special populations, and studies with absorption-altering co-medication were
-excluded. Each screening decision, with its rationale and source link, is recorded in the
-project's screening log.
+excluded. Reporting follows the PRISMA framework [@page2021prisma]. Each screening decision, with
+its rationale and source link, is recorded in the project's screening log.
 
 ## Data extraction, harmonisation, and digitisation
 
@@ -192,7 +195,8 @@ if (!is.null(cov)) kable(cov, digits = 3) else cat("*(Run scripts/05_covariate_a
 strata. A systematic change in apparent clearance with dose is the expected signature of
 **dose-dependent bioavailability**: acetaminophen's absolute bioavailability is known to rise
 with dose (first reported by Rawlins and colleagues in 1977), so CL/F — which is clearance
-divided by F — is expected to move as dose changes even if true clearance is constant. This
+divided by F — is expected to move as dose changes even if true clearance is constant
+[@rawlins1977]. This
 finding should be read as indicative rather than definitive, because the higher-dose stratum is
 supported by relatively few studies; it nonetheless demonstrates that the framework can detect a
 covariate signal.
@@ -269,11 +273,7 @@ Package versions are recorded in `results/sessionInfo.txt`.
 
 # References {.unnumbered}
 
-- Rawlins MD, Henderson DB, Hijab AR. Pharmacokinetics of paracetamol (acetaminophen) after
-  intravenous and oral administration. *Eur J Clin Pharmacol.* 1977;11(4):283–286.
-- van de Beek H, Välitalo PAJ, Zwep LB, van Hasselt JGC. Aggregate data modelling: a fast
-  implementation for fitting pharmacometrics models to summary-level data in R (`admixr2`). 2025.
-- Fidler M, et al. Nonlinear mixed-effects model development and simulation using `nlmixr` and
-  related R open-source packages. *CPT Pharmacometrics Syst Pharmacol.* 2019;8(9):621–633.
+::: {#refs}
+:::
 
 *(Full per-study references and DOIs are listed in the screening log in the repository.)*
