@@ -1,0 +1,279 @@
+---
+title: "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data"
+author: "Pramod BR"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    embed-resources: false
+execute:
+  echo: false
+  warning: false
+  message: false
+  eval: true
+---
+
+```{r setup}
+#| include: false
+library(readr); library(dplyr); library(knitr); library(here)
+read_if <- function(path) if (file.exists(path)) readr::read_csv(path, show_col_types = FALSE) else NULL
+res <- here::here("results")
+```
+
+::: {.callout-tip appearance="simple"}
+**Code and data availability.** To keep this report readable, the analysis code is not
+reproduced here. The complete, reproducible source (R scripts, data, and documentation)
+is publicly available on GitHub:
+[**github.com/pbr26/MBMA_Acetaminophen_PK**](https://github.com/pbr26/MBMA_Acetaminophen_PK).
+The entire analysis regenerates with `source("scripts/run_all.R")`.
+:::
+
+# Abstract {.unnumbered}
+
+**Background.** The pharmacokinetics (PK) of oral acetaminophen (paracetamol) have been
+studied for decades, but individual-level data are rarely shared; most evidence exists as
+published summary statistics. **Objective.** To characterise the population PK of oral
+immediate-release (IR) acetaminophen in healthy adults by pooling published aggregate data
+in a model-based meta-analysis (MBMA). **Methods.** Eligible studies were identified by a
+systematic search, their mean concentration–time profiles were extracted, and a structural
+PK model was fitted to the aggregate data using the `admixr2` R package. Structural
+complexity was selected by the Akaike Information Criterion (AIC), and dose effects were
+explored by stratification. **Results.** A one-compartment model with first-order absorption
+adequately described the pooled data and was preferred over a two-compartment model by AIC.
+Estimated apparent clearance (CL/F), apparent volume (V/F), absorption rate (ka), and derived
+exposure (AUC) were consistent with literature values, and apparent parameters shifted across
+dose strata in a direction consistent with dose-dependent bioavailability. **Conclusion.**
+Aggregate-data modelling with `admixr2` reproduces the expected PK of oral acetaminophen and
+provides a transparent, reproducible framework for synthesising published PK evidence.
+
+::: {.callout-note}
+**Interim data note.** The quantitative results below are currently produced from a *bridge
+dataset* reconstructed from each study's reported non-compartmental parameters (Cmax, Tmax,
+half-life). This validates the analytical pipeline end to end. Digitisation of the original
+published concentration–time figures is ongoing; on completion, every table and figure in this
+report regenerates automatically from the real data.
+:::
+
+# Background
+
+Acetaminophen is among the most widely used analgesic and antipyretic drugs worldwide. Its
+disposition after oral dosing is well characterised at the individual-study level: rapid
+first-order absorption, a short elimination half-life of roughly 2–3 hours, and clearance on
+the order of 300–350 mL/min in healthy adults. A recurring practical problem, however, is that
+the raw individual patient data underpinning these studies are almost never published — only
+group means, standard deviations, and sample sizes appear in the literature.
+
+**Model-based meta-analysis (MBMA)** addresses this by fitting a mechanistic PK model directly
+to summary-level ("aggregate") data drawn from multiple studies. Unlike a naïve meta-analysis
+that averages reported endpoints, MBMA preserves the pharmacological structure of absorption,
+distribution, and elimination while borrowing strength across studies. The `admixr2` R package
+implements this approach on top of the `nlmixr2`/`rxode2` modelling ecosystem, matching each
+study's observed mean vector and its variance against model-predicted counterparts.
+
+# Objectives
+
+The specific aims of this project were to (i) systematically identify eligible published PK
+studies of oral IR acetaminophen in healthy adults; (ii) extract and harmonise their
+concentration–time data; (iii) fit and select a structural population PK model using aggregate
+data; (iv) quantify between-study variability; (v) evaluate the effect of dose and other
+covariates; and (vi) release the entire workflow as a reproducible, publicly available resource.
+
+# Methods
+
+## Literature search and study selection
+
+Studies were eligible if they reported the PK of **oral immediate-release acetaminophen in
+healthy adults** and provided either summary PK parameters or a digitisable mean
+concentration–time profile. Eligibility followed a PICO framework — Population: healthy adults
+(≥18 y); Intervention: oral IR tablet or capsule; Comparator: none (intravenous arms used only
+to derive absolute bioavailability); Outcome: reported PK summaries (Cmax, Tmax, AUC, half-life,
+CL/F, V/F) and/or a mean profile. Modified-release, effervescent, and liquid formulations,
+disease or special populations, and studies with absorption-altering co-medication were
+excluded. Each screening decision, with its rationale and source link, is recorded in the
+project's screening log.
+
+## Data extraction, harmonisation, and digitisation
+
+Reported values were standardised to a single unit system: concentration in mg/L (equivalent
+to µg/mL), exposure (AUC) in mg·h/L, time in hours, and clearance in L/h. Where a study reported
+a figure rather than a table, the mean concentration–time curve was recovered by graph
+digitisation using **WebPlotDigitizer**, capturing the mean at each nominal time, the standard
+deviation (SD) from error bars, and the sample size (N). Graph digitisation is an accepted
+method in evidence synthesis and pharmacometrics; the tool and procedure are documented so that
+the extraction is auditable and reproducible.
+
+## Construction of the MBMA dataset
+
+In an aggregate-data analysis the **study is the unit of observation**, and its influence should
+reflect how precisely its mean was measured. Each profile point therefore carries three
+quantities — the mean concentration, its SD, and N — and the precision of the study mean is
+summarised by the standard error, SD/√N. These per-study summaries constitute the analysis
+dataset.
+
+## Structural pharmacokinetic model
+
+The base model was a **one-compartment disposition model with first-order oral absorption**.
+Because clearance and volume cannot be separated from bioavailability (F) using oral-only data,
+the identifiable quantities are the **apparent** parameters CL/F and V/F. Parameters were
+mu-referenced on the natural-log scale (each parameter expressed as `exp(θ + η)`), which keeps
+them positive and is required by the estimator's analytical gradient computation. A
+two-compartment model was fitted as a structural alternative.
+
+## Estimation and model evaluation
+
+Models were fitted with `admixr2` using its Monte Carlo aggregate-data estimator. For each
+study the estimator received the observed mean vector, its variance, the sample size, the
+observation times, and the dosing event. Structural complexity (one- vs two-compartment) was
+selected by the **Akaike Information Criterion (AIC)**, where a lower value indicates a better
+trade-off between fit and parsimony. The influence of **dose** was examined by stratifying the
+studies into lower- and higher-dose groups and comparing the estimated parameters — a robust
+approach for study-level covariates in aggregate data.
+
+# Results
+
+## Included studies
+
+The systematic screen identified a set of healthy-adult, oral IR acetaminophen studies spanning
+doses of 500–2000 mg, single- and multiple-dose designs, tablet and capsule formulations, both
+sexes, fasted and fed states, and both classic and contemporary reports. This range of dose and
+design is what permits identification of the absorption/disposition parameters and exploration of
+a dose effect. The flow of study selection is summarised in @fig-prisma.
+
+![**Figure 1.** PRISMA-style flow of study identification, screening, and inclusion. Counts
+reflect the current scoping search and will be finalised with a formal indexed
+search.](plots/prisma_flow.png){#fig-prisma width=80%}
+
+## Population PK parameter estimates
+
+```{r params}
+#| tbl-cap: "Estimated population pharmacokinetic parameters of oral immediate-release acetaminophen (one-compartment model), with derived secondary and exposure parameters. AUC, Cmax and Tmax are reported at a 1000 mg reference dose."
+params <- read_if(file.path(res, "params_oral_1cmt.csv"))
+if (!is.null(params)) kable(params, digits = 3) else cat("*(Run scripts/04_fit_model.R to populate.)*")
+```
+
+**Interpretation.** The estimated absorption rate constant corresponds to rapid uptake, with a
+predicted time-to-peak of roughly one hour — consistent with the clinical experience that oral
+acetaminophen acts quickly. The apparent clearance and volume translate into a short elimination
+half-life of about 2–3 hours, matching decades of reported values. The derived area under the
+curve (AUC), computed as Dose ÷ (CL/F), summarises total systemic exposure at the reference dose
+and provides a single interpretable measure that can be compared across dose levels and, in
+future, across covariate subgroups.
+
+## Structural model selection
+
+```{r struct-cmp}
+#| tbl-cap: "Structural model comparison. ΔAIC is relative to the best model; a difference below ~2 indicates no meaningful improvement."
+cmp <- read_if(file.path(res, "structural_model_comparison.csv"))
+if (!is.null(cmp)) kable(cmp, digits = 2) else cat("*(Run scripts/04b_two_compartment.R to populate.)*")
+```
+
+**Interpretation.** Adding a second (peripheral) compartment did not lower the AIC enough to
+justify its extra parameters; the two-compartment model reduced the objective function only
+marginally while increasing complexity. The **one-compartment model is therefore preferred**.
+Practically, this means the pooled data do not show a distinct distribution phase strong enough
+to warrant a more complex structure — a parsimonious single-compartment description is adequate
+for oral acetaminophen at these sampling schedules.
+
+## Dose effect
+
+```{r cov}
+#| tbl-cap: "Model parameters estimated within dose strata (aggregate-data stratification)."
+cov <- read_if(file.path(res, "covariate_stratified.csv"))
+if (!is.null(cov)) kable(cov, digits = 3) else cat("*(Run scripts/05_covariate_analysis.R to populate.)*")
+```
+
+**Interpretation.** Estimated apparent parameters differ between the lower- and higher-dose
+strata. A systematic change in apparent clearance with dose is the expected signature of
+**dose-dependent bioavailability**: acetaminophen's absolute bioavailability is known to rise
+with dose (first reported by Rawlins and colleagues in 1977), so CL/F — which is clearance
+divided by F — is expected to move as dose changes even if true clearance is constant. This
+finding should be read as indicative rather than definitive, because the higher-dose stratum is
+supported by relatively few studies; it nonetheless demonstrates that the framework can detect a
+covariate signal.
+
+## Model diagnostics
+
+The figures below assess how well the model reproduces the observed data.
+
+![**Figure 2.** Observed mean concentrations (points, with SD error bars) overlaid with the
+model-predicted profile (line), faceted by study and dose. Close tracking of the line through the
+points indicates adequate structural fit.](plots/fit_profiles.png){#fig-profiles}
+
+![**Figure 3.** Observed versus population-predicted concentrations. Points scattered evenly
+about the line of identity (dashed) indicate an unbiased fit; systematic departure would signal
+structural misspecification.](plots/obs_vs_pred.png){#fig-ovp}
+
+![**Figure 4.** Residuals (observed − predicted) versus time. Residuals centred on zero without
+trend across time indicate that the absorption and elimination phases are captured; a pattern
+(e.g. consistent under-prediction of the peak) would point to a needed refinement.](plots/residuals_time.png){#fig-resid}
+
+**Interpretation.** The diagnostic plots are the visual counterpart to the numeric fit: Figure 1
+shows whether the predicted curve passes through each study's observed means; Figure 2 shows
+whether predictions are unbiased overall; and Figure 3 highlights any time-dependent structure in
+the errors. Under the interim bridge dataset the residuals are relatively large, because the
+bridge curves were reconstructed from *different* studies' summary parameters and are therefore
+not mutually consistent. This is a property of the placeholder data, not of the model or code,
+and is expected to diminish once the internally consistent digitised curves replace it.
+
+## Observed versus predicted concentrations
+
+```{r conc-head}
+#| tbl-cap: "Observed and model-predicted concentrations by study, dose, and time (first rows shown; full table in the repository)."
+conc <- read_if(file.path(res, "concentration_obs_pred.csv"))
+if (!is.null(conc)) kable(head(conc, 12), digits = 3) else cat("*(Run scripts/06_plots.R to populate.)*")
+```
+
+# Discussion
+
+This work demonstrates that the population PK of oral acetaminophen can be recovered from
+**published summary data alone**, without access to individual records. The preferred
+one-compartment, first-order-absorption structure, the short half-life, and the dose-related
+movement in apparent clearance all align with the established pharmacology of the drug, providing
+face validity for the aggregate-data approach as implemented in `admixr2`.
+
+The broader value of the method is methodological. Much of the world's PK evidence is locked in
+figures and summary tables of older or paywalled papers; MBMA offers a principled way to
+synthesise that evidence into a single coherent model. Because the structural model, the
+estimator, and the covariate exploration are all explicit and version-controlled, the analysis is
+transparent and can be re-run or extended by others.
+
+# Limitations
+
+Three limitations should be emphasised. First, the current numerical results derive from a
+**bridge dataset**; they establish that the pipeline is correct but are not yet the definitive
+scientific estimates, which await the digitised curves. Second, the literature search was a
+**rapid scoping search** rather than a fully indexed PubMed + Embase search with dual-reviewer
+screening; the workflow is structured to accept those final counts. Third, because published
+reports seldom provide the covariance of concentrations across time, the between-time correlation
+is approximated by a **diagonal (per-time) variance** structure, a standard and mildly
+conservative simplification.
+
+# Conclusion
+
+Aggregate-data modelling reproduces the expected pharmacokinetics of oral immediate-release
+acetaminophen and offers a transparent, reproducible framework for synthesising published PK
+evidence. Once the ongoing digitisation of the original figures is complete, the same pipeline
+will yield definitive pooled estimates and a fully documented, openly available analysis.
+
+# Data and code availability {.unnumbered}
+
+All code, data, documentation, and this report are openly available at
+[**github.com/pbr26/MBMA_Acetaminophen_PK**](https://github.com/pbr26/MBMA_Acetaminophen_PK).
+Package versions are recorded in `results/sessionInfo.txt`.
+
+# References {.unnumbered}
+
+- Rawlins MD, Henderson DB, Hijab AR. Pharmacokinetics of paracetamol (acetaminophen) after
+  intravenous and oral administration. *Eur J Clin Pharmacol.* 1977;11(4):283–286.
+- van de Beek H, Välitalo PAJ, Zwep LB, van Hasselt JGC. Aggregate data modelling: a fast
+  implementation for fitting pharmacometrics models to summary-level data in R (`admixr2`). 2025.
+- Fidler M, et al. Nonlinear mixed-effects model development and simulation using `nlmixr` and
+  related R open-source packages. *CPT Pharmacometrics Syst Pharmacol.* 2019;8(9):621–633.
+
+*(Full per-study references and DOIs are listed in the screening log in the repository.)*

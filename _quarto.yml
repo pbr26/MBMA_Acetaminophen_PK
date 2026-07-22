@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: _site       # local build output (git-ignored); published via `quarto publish gh-pages`
+
+website:
+  title: "Acetaminophen MBMA"
+  description: "Model-based meta-analysis of oral acetaminophen pharmacokinetics"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: report.qmd
+        text: Report
+    right:
+      - icon: github
+        href: https://github.com/pbr26/MBMA_Acetaminophen_PK
+        text: GitHub
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    embed-resources: false   # website assets live in docs/; no need to inline

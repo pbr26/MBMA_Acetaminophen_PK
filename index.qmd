@@ -1,0 +1,40 @@
+---
+title: "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics"
+subtitle: "Published aggregate data · admixr2 · reproducible R workflow"
+author: "Pramod BR"
+date: today
+---
+
+## Overview
+
+This project pools **published summary-level pharmacokinetic (PK) data** for oral
+immediate-release acetaminophen (paracetamol) in healthy adults and fits a single
+structural PK model to it — a **model-based meta-analysis (MBMA)** — using the
+[`admixr2`](https://cran.r-project.org/package=admixr2) R package (built on
+`nlmixr2` / `rxode2`).
+
+➡️ **[Read the full report](report.qmd)** for methods, parameter estimates, model
+comparison, covariate analysis, and diagnostic figures.
+
+## What the workflow does
+
+1. **Systematic literature review** — PICO-based study selection with a documented,
+   per-paper rationale.
+2. **Data extraction** — reported PK values standardized to one unit system.
+3. **Digitization** — mean concentration–time curves recovered from published figures.
+4. **Dataset assembly** — an aggregate MBMA dataset (mean, SD, N per time).
+5. **Model fitting** — one-compartment first-order-absorption model via `admixr2`.
+6. **Model & covariate analysis** — AIC-based structural comparison and dose stratification.
+7. **Figures & reporting** — publication-quality diagnostics; this website.
+
+## Reproducibility
+
+The entire analysis runs with `source("scripts/run_all.R")`. Source code, data, and
+documentation are on GitHub:
+<https://github.com/pbr26/MBMA_Acetaminophen_PK>.
+
+::: {.callout-note}
+Results currently use a **bridge dataset** reconstructed from reported PK parameters,
+which validates the pipeline. They are being replaced with curves digitized from the
+published figures; every figure and table then regenerates automatically.
+:::

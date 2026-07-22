@@ -19,4 +19,13 @@ Thumbs.db
 # Editor
 .vscode/
 
+# Quarto
+/.quarto/
+/_site/
+report_files/
+index_files/
+
 # NOTE: MBMA_Acetaminophen_PK.Rproj IS tracked on purpose (the project anchor).
+
+/.quarto/
+**/*.quarto_ipynb
