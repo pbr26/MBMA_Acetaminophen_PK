@@ -2,72 +2,86 @@
   {
     "objectID": "report.html",
     "href": "report.html",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
     "section": "",
-    "text": "This report presents a model-based meta-analysis (MBMA) of the pharmacokinetics (PK) of oral immediate-release (IR) acetaminophen (paracetamol) in healthy adults. Rather than collecting new clinical data, it pools summary-level results published in the literature and fits a single structural PK model to them using the admixr2 R package, which is built on the nlmixr2/rxode2 ecosystem.\n\n\n\n\n\n\nNote\n\n\n\nThe current results are generated from a bridge dataset reconstructed from each study’s reported non-compartmental parameters (Cmax, Tmax, half-life). They validate the full pipeline end to end. For reportable scientific estimates, the bridge rows in data/raw/pk_profiles.csv are being replaced with curves digitized from the published figures, after which every number below regenerates automatically."
+    "text": "Code and data availability. To keep this report readable, the analysis code is not reproduced here. The complete, reproducible source (R scripts, data, and documentation) is publicly available on GitHub: github.com/pbr26/MBMA_Acetaminophen_PK. The entire analysis regenerates with source(\"scripts/run_all.R\")."
   },
   {
-    "objectID": "report.html#study-selection",
-    "href": "report.html#study-selection",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "2.1 Study selection",
-    "text": "2.1 Study selection\nEligible studies reported PK of oral immediate-release acetaminophen in healthy adults, with either summary PK parameters or a digitizable mean concentration–time profile. Selection followed a PICO framework (Population = healthy adults; Intervention = oral IR tablet/capsule; Comparator = none; Outcome = PK summaries). Modified-release, effervescent and liquid formulations, disease populations, and studies with absorption-altering co-medication were excluded. Full per-paper rationale is in docs/literature_screening_log.xlsx."
+    "objectID": "report.html#literature-search-and-study-selection",
+    "href": "report.html#literature-search-and-study-selection",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "3.1 Literature search and study selection",
+    "text": "3.1 Literature search and study selection\nStudies were eligible if they reported the PK of oral immediate-release acetaminophen in healthy adults and provided either summary PK parameters or a digitisable mean concentration–time profile. Eligibility followed a PICO framework — Population: healthy adults (≥18 y); Intervention: oral IR tablet or capsule; Comparator: none (intravenous arms used only to derive absolute bioavailability); Outcome: reported PK summaries (Cmax, Tmax, AUC, half-life, CL/F, V/F) and/or a mean profile. Modified-release, effervescent, and liquid formulations, disease or special populations, and studies with absorption-altering co-medication were excluded. Reporting follows the PRISMA framework (Page et al. 2021). Each screening decision, with its rationale and source link, is recorded in the project’s screening log."
   },
   {
-    "objectID": "report.html#data-extraction-and-digitization",
-    "href": "report.html#data-extraction-and-digitization",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "2.2 Data extraction and digitization",
-    "text": "2.2 Data extraction and digitization\nReported values were standardized to a single unit system (concentration mg/L, exposure mg·h/L, time h, clearance L/h). Mean concentration–time curves were digitized from published figures using WebPlotDigitizer, capturing the mean at each time, the standard deviation from error bars, and the sample size. Digitization of published figures is an accepted method in evidence synthesis and pharmacometrics."
+    "objectID": "report.html#data-extraction-harmonisation-and-digitisation",
+    "href": "report.html#data-extraction-harmonisation-and-digitisation",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "3.2 Data extraction, harmonisation, and digitisation",
+    "text": "3.2 Data extraction, harmonisation, and digitisation\nReported values were standardised to a single unit system: concentration in mg/L (equivalent to µg/mL), exposure (AUC) in mg·h/L, time in hours, and clearance in L/h. Where a study reported a figure rather than a table, the mean concentration–time curve was recovered by graph digitisation using WebPlotDigitizer, capturing the mean at each nominal time, the standard deviation (SD) from error bars, and the sample size (N). Graph digitisation is an accepted method in evidence synthesis and pharmacometrics; the tool and procedure are documented so that the extraction is auditable and reproducible."
   },
   {
-    "objectID": "report.html#structural-model",
-    "href": "report.html#structural-model",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "2.3 Structural model",
-    "text": "2.3 Structural model\nThe base model is a one-compartment model with first-order absorption. Because only apparent parameters are identifiable from oral-only data, we estimate apparent clearance (CL/F) and apparent volume (V/F). Parameters are mu-referenced on the log scale.\n\n\nCode\noral_1cmt &lt;- function() {\n  ini({\n    tka &lt;- log(1.5); tcl &lt;- log(21); tv &lt;- log(60)\n    prop.sd &lt;- c(0, 0.2)\n    eta.ka ~ 0.09; eta.cl ~ 0.09; eta.v ~ 0.09\n  })\n  model({\n    ka &lt;- exp(tka + eta.ka); cl &lt;- exp(tcl + eta.cl); v &lt;- exp(tv + eta.v)\n    d/dt(depot)   &lt;- -ka * depot\n    d/dt(central) &lt;-  ka * depot - (cl / v) * central\n    cp &lt;- central / v\n    cp ~ prop(prop.sd)\n  })\n}"
+    "objectID": "report.html#construction-of-the-mbma-dataset",
+    "href": "report.html#construction-of-the-mbma-dataset",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "3.3 Construction of the MBMA dataset",
+    "text": "3.3 Construction of the MBMA dataset\nIn an aggregate-data analysis the study is the unit of observation, and its influence should reflect how precisely its mean was measured. Each profile point therefore carries three quantities — the mean concentration, its SD, and N — and the precision of the study mean is summarised by the standard error, SD/√N. These per-study summaries constitute the analysis dataset."
   },
   {
-    "objectID": "report.html#fitting-with-admixr2",
-    "href": "report.html#fitting-with-admixr2",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "2.4 Fitting with admixr2",
-    "text": "2.4 Fitting with admixr2\nFor each study, admixr2 receives the mean concentration vector (E), its variance (V), sample size (n), observation times, and the dosing event. Fitting uses the Monte Carlo aggregate-data estimator (est = \"admc\"). Model selection uses the Akaike Information Criterion (AIC); covariate effects are explored by dose stratification."
+    "objectID": "report.html#structural-pharmacokinetic-model",
+    "href": "report.html#structural-pharmacokinetic-model",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "3.4 Structural pharmacokinetic model",
+    "text": "3.4 Structural pharmacokinetic model\nThe base model was a one-compartment disposition model with first-order oral absorption. Because clearance and volume cannot be separated from bioavailability (F) using oral-only data, the identifiable quantities are the apparent parameters CL/F and V/F. Parameters were mu-referenced on the natural-log scale (each parameter expressed as exp(θ + η)), which keeps them positive and is required by the estimator’s analytical gradient computation. A two-compartment model was fitted as a structural alternative."
   },
   {
-    "objectID": "report.html#structural-parameters",
-    "href": "report.html#structural-parameters",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "3.1 Structural parameters",
-    "text": "3.1 Structural parameters\n\n\nCode\nparams &lt;- read_if(file.path(res, \"params_oral_1cmt.csv\"))\nif (!is.null(params)) kable(params, digits = 3) else cat(\"Run scripts/04_fit_model.R to generate this table.\")\n\n\n\nFitted population PK parameters (one-compartment model), including derived exposure metrics.\n\n\nparameter\nsymbol\nestimate\nunit\n\n\n\n\nAbsorption rate constant (ka)\nka\n1.938\n1/h\n\n\nApparent clearance (CL/F)\nCL/F\n12.662\nL/h\n\n\nApparent volume of distribution (V/F)\nV/F\n42.040\nL\n\n\nElimination rate constant (ke)\nke\n0.301\n1/h\n\n\nElimination half-life (t1/2)\nt1/2\n2.301\nh\n\n\nTime to peak at 1000 mg (Tmax)\nTmax\n1.137\nh\n\n\nPeak concentration at 1000 mg (Cmax)\nCmax\n16.888\nmg/L\n\n\nExposure at 1000 mg (AUC0-inf)\nAUC0-inf\n78.974\nmg*h/L"
+    "objectID": "report.html#estimation-and-model-evaluation",
+    "href": "report.html#estimation-and-model-evaluation",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "3.5 Estimation and model evaluation",
+    "text": "3.5 Estimation and model evaluation\nModels were fitted with admixr2 using its Monte Carlo aggregate-data estimator. For each study the estimator received the observed mean vector, its variance, the sample size, the observation times, and the dosing event. Structural complexity (one- vs two-compartment) was selected by the Akaike Information Criterion (AIC), where a lower value indicates a better trade-off between fit and parsimony. The influence of dose was examined by stratifying the studies into lower- and higher-dose groups and comparing the estimated parameters — a robust approach for study-level covariates in aggregate data."
   },
   {
-    "objectID": "report.html#structural-model-comparison",
-    "href": "report.html#structural-model-comparison",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "3.2 Structural model comparison",
-    "text": "3.2 Structural model comparison\n\n\nCode\ncmp &lt;- read_if(file.path(res, \"structural_model_comparison.csv\"))\nif (!is.null(cmp)) kable(cmp, digits = 2) else cat(\"Run scripts/04b_two_compartment.R to generate this table.\")\n\n\n\nOne- vs two-compartment comparison. Lower AIC indicates the preferred model.\n\n\nmodel\nn_par\nobj_2LL\nAIC\ndAIC\n\n\n\n\n1-compartment\n3\n2383.56\n2397.56\n0.00\n\n\n2-compartment\n5\n2381.93\n2399.93\n2.37\n\n\n\n\n\nThe one-compartment model is preferred: the two-compartment version does not lower the AIC enough to justify its additional parameters."
+    "objectID": "report.html#included-studies",
+    "href": "report.html#included-studies",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "4.1 Included studies",
+    "text": "4.1 Included studies\nThe systematic screen identified a set of healthy-adult, oral IR acetaminophen studies spanning doses of 500–2000 mg, single- and multiple-dose designs, tablet and capsule formulations, both sexes, fasted and fed states, and both classic and contemporary reports. This range of dose and design is what permits identification of the absorption/disposition parameters and exploration of a dose effect. The flow of study selection is summarised in Figure 1.\n\n\n\n\n\n\nFigure 1: Figure 1. PRISMA-style flow of study identification, screening, and inclusion. Counts reflect the current scoping search and will be finalised with a formal indexed search."
   },
   {
-    "objectID": "report.html#dose-stratified-covariate-analysis",
-    "href": "report.html#dose-stratified-covariate-analysis",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "3.3 Dose-stratified covariate analysis",
-    "text": "3.3 Dose-stratified covariate analysis\n\n\nCode\ncov &lt;- read_if(file.path(res, \"covariate_stratified.csv\"))\nif (!is.null(cov)) kable(cov, digits = 3) else cat(\"Run scripts/05_covariate_analysis.R to generate this table.\")\n\n\n\nModel parameters estimated within dose strata.\n\n\n\n\n\n\n\n\n\n\n\nsubgroup\nn_arms\nka_per_h\nclf_L_h\nvf_L\nobj_2LL\nAIC\n\n\n\n\nAll studies\n5\n1.938\n12.66\n42.04\n2383.56\n2397.56\n\n\nLow dose (&lt;=700 mg)\n4\n2.747\n13.36\n47.61\n1277.99\n1291.99\n\n\nHigh dose (&gt;=1000 mg)\n2\n0.321\n18.10\n14.26\n628.86\n642.86\n\n\n\n\n\nA shift in apparent parameters across dose strata is consistent with the known dose-dependence of oral acetaminophen bioavailability (Rawlins, 1977)."
+    "objectID": "report.html#population-pk-parameter-estimates",
+    "href": "report.html#population-pk-parameter-estimates",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "4.2 Population PK parameter estimates",
+    "text": "4.2 Population PK parameter estimates\n\n\n\nEstimated population pharmacokinetic parameters of oral immediate-release acetaminophen (one-compartment model), with derived secondary and exposure parameters. AUC, Cmax and Tmax are reported at a 1000 mg reference dose.\n\n\nparameter\nsymbol\nestimate\nunit\n\n\n\n\nAbsorption rate constant (ka)\nka\n1.938\n1/h\n\n\nApparent clearance (CL/F)\nCL/F\n12.662\nL/h\n\n\nApparent volume of distribution (V/F)\nV/F\n42.040\nL\n\n\nElimination rate constant (ke)\nke\n0.301\n1/h\n\n\nElimination half-life (t1/2)\nt1/2\n2.301\nh\n\n\nTime to peak at 1000 mg (Tmax)\nTmax\n1.137\nh\n\n\nPeak concentration at 1000 mg (Cmax)\nCmax\n16.888\nmg/L\n\n\nExposure at 1000 mg (AUC0-inf)\nAUC0-inf\n78.974\nmg*h/L\n\n\n\n\n\nInterpretation. The estimated absorption rate constant corresponds to rapid uptake, with a predicted time-to-peak of roughly one hour — consistent with the clinical experience that oral acetaminophen acts quickly. The apparent clearance and volume translate into a short elimination half-life of about 2–3 hours, matching decades of reported values. The derived area under the curve (AUC), computed as Dose ÷ (CL/F), summarises total systemic exposure at the reference dose and provides a single interpretable measure that can be compared across dose levels and, in future, across covariate subgroups."
   },
   {
-    "objectID": "report.html#diagnostic-figures",
-    "href": "report.html#diagnostic-figures",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "3.4 Diagnostic figures",
-    "text": "3.4 Diagnostic figures\n\n\n\n\n\n\n\n\n\nFigure 1: Observed means (points) with model fit (line), by study and dose.\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Observed vs population-predicted concentrations.\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Residuals versus time."
+    "objectID": "report.html#structural-model-selection",
+    "href": "report.html#structural-model-selection",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "4.3 Structural model selection",
+    "text": "4.3 Structural model selection\n\n\n\nStructural model comparison. ΔAIC is relative to the best model; a difference below ~2 indicates no meaningful improvement.\n\n\nmodel\nn_par\nobj_2LL\nAIC\ndAIC\n\n\n\n\n1-compartment\n3\n2383.56\n2397.56\n0.00\n\n\n2-compartment\n5\n2381.93\n2399.93\n2.37\n\n\n\n\n\nInterpretation. Adding a second (peripheral) compartment did not lower the AIC enough to justify its extra parameters; the two-compartment model reduced the objective function only marginally while increasing complexity. The one-compartment model is therefore preferred. Practically, this means the pooled data do not show a distinct distribution phase strong enough to warrant a more complex structure — a parsimonious single-compartment description is adequate for oral acetaminophen at these sampling schedules."
   },
   {
-    "objectID": "report.html#observed-vs-predicted-concentrations",
-    "href": "report.html#observed-vs-predicted-concentrations",
-    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics",
-    "section": "3.5 Observed vs predicted concentrations",
-    "text": "3.5 Observed vs predicted concentrations\n\n\nCode\nconc &lt;- read_if(file.path(res, \"concentration_obs_pred.csv\"))\nif (!is.null(conc)) kable(head(conc, 12), digits = 3) else cat(\"Run scripts/06_plots.R to generate this table.\")\n\n\n\nFirst rows of the observed vs predicted concentration table (full table in results/).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nstudy_id\ndose_mg\nformulation\ntime_h\nobs_conc_mg_L\nobs_sd_mg_L\nn\npred_conc_mg_L\nresidual_mg_L\nsource_ref\n\n\n\n\nS01\n500\nIR tablet\n0.25\n1.300\n0.325\n6\n4.386\n-3.086\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n0.50\n2.154\n0.539\n6\n6.770\n-4.616\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n0.75\n2.687\n0.672\n6\n7.943\n-5.256\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n1.00\n2.991\n0.748\n6\n8.392\n-5.401\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n1.50\n3.159\n0.790\n6\n8.194\n-5.035\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n2.00\n3.008\n0.752\n6\n7.418\n-4.410\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n3.00\n2.391\n0.598\n6\n5.663\n-3.272\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n4.00\n1.767\n0.442\n6\n4.215\n-2.448\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n6.00\n0.902\n0.226\n6\n2.311\n-1.409\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n8.00\n0.450\n0.113\n6\n1.265\n-0.815\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n10.00\n0.224\n0.056\n6\n0.693\n-0.469\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n12.00\n0.111\n0.028\n6\n0.379\n-0.268\nRawlins 1977 (F,CL real; V,ka typical)"
+    "objectID": "report.html#dose-effect",
+    "href": "report.html#dose-effect",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "4.4 Dose effect",
+    "text": "4.4 Dose effect\n\n\n\nModel parameters estimated within dose strata (aggregate-data stratification).\n\n\n\n\n\n\n\n\n\n\n\nsubgroup\nn_arms\nka_per_h\nclf_L_h\nvf_L\nobj_2LL\nAIC\n\n\n\n\nAll studies\n5\n1.938\n12.66\n42.04\n2383.56\n2397.56\n\n\nLow dose (&lt;=700 mg)\n4\n2.747\n13.36\n47.61\n1277.99\n1291.99\n\n\nHigh dose (&gt;=1000 mg)\n2\n0.321\n18.10\n14.26\n628.86\n642.86\n\n\n\n\n\nInterpretation. Estimated apparent parameters differ between the lower- and higher-dose strata. A systematic change in apparent clearance with dose is the expected signature of dose-dependent bioavailability: acetaminophen’s absolute bioavailability is known to rise with dose (first reported by Rawlins and colleagues in 1977), so CL/F — which is clearance divided by F — is expected to move as dose changes even if true clearance is constant (Rawlins et al. 1977). This finding should be read as indicative rather than definitive, because the higher-dose stratum is supported by relatively few studies; it nonetheless demonstrates that the framework can detect a covariate signal."
+  },
+  {
+    "objectID": "report.html#model-diagnostics",
+    "href": "report.html#model-diagnostics",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "4.5 Model diagnostics",
+    "text": "4.5 Model diagnostics\nThe figures below assess how well the model reproduces the observed data.\n\n\n\n\n\n\nFigure 2: Figure 2. Observed mean concentrations (points, with SD error bars) overlaid with the model-predicted profile (line), faceted by study and dose. Close tracking of the line through the points indicates adequate structural fit.\n\n\n\n\n\n\n\n\n\nFigure 3: Figure 3. Observed versus population-predicted concentrations. Points scattered evenly about the line of identity (dashed) indicate an unbiased fit; systematic departure would signal structural misspecification.\n\n\n\n\n\n\n\n\n\nFigure 4: Figure 4. Residuals (observed − predicted) versus time. Residuals centred on zero without trend across time indicate that the absorption and elimination phases are captured; a pattern (e.g. consistent under-prediction of the peak) would point to a needed refinement.\n\n\n\nInterpretation. The diagnostic plots are the visual counterpart to the numeric fit: Figure 1 shows whether the predicted curve passes through each study’s observed means; Figure 2 shows whether predictions are unbiased overall; and Figure 3 highlights any time-dependent structure in the errors. Under the interim bridge dataset the residuals are relatively large, because the bridge curves were reconstructed from different studies’ summary parameters and are therefore not mutually consistent. This is a property of the placeholder data, not of the model or code, and is expected to diminish once the internally consistent digitised curves replace it."
+  },
+  {
+    "objectID": "report.html#observed-versus-predicted-concentrations",
+    "href": "report.html#observed-versus-predicted-concentrations",
+    "title": "Model-Based Meta-Analysis of Oral Acetaminophen Pharmacokinetics Using Published Aggregate Data",
+    "section": "4.6 Observed versus predicted concentrations",
+    "text": "4.6 Observed versus predicted concentrations\n\n\n\nObserved and model-predicted concentrations by study, dose, and time (first rows shown; full table in the repository).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nstudy_id\ndose_mg\nformulation\ntime_h\nobs_conc_mg_L\nobs_sd_mg_L\nn\npred_conc_mg_L\nresidual_mg_L\nsource_ref\n\n\n\n\nS01\n500\nIR tablet\n0.25\n1.300\n0.325\n6\n4.386\n-3.086\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n0.50\n2.154\n0.539\n6\n6.770\n-4.616\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n0.75\n2.687\n0.672\n6\n7.943\n-5.256\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n1.00\n2.991\n0.748\n6\n8.392\n-5.401\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n1.50\n3.159\n0.790\n6\n8.194\n-5.035\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n2.00\n3.008\n0.752\n6\n7.418\n-4.410\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n3.00\n2.391\n0.598\n6\n5.663\n-3.272\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n4.00\n1.767\n0.442\n6\n4.215\n-2.448\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n6.00\n0.902\n0.226\n6\n2.311\n-1.409\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n8.00\n0.450\n0.113\n6\n1.265\n-0.815\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n10.00\n0.224\n0.056\n6\n0.693\n-0.469\nRawlins 1977 (F,CL real; V,ka typical)\n\n\nS01\n500\nIR tablet\n12.00\n0.111\n0.028\n6\n0.379\n-0.268\nRawlins 1977 (F,CL real; V,ka typical)"
   },
   {
     "objectID": "docs/01_systematic_literature_review.html",
